@@ -1,21 +1,32 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import "./App.css";
-import BookStore from "./BookStore";
+import { useEffect } from "react";
 
 function App() {
-  const books = [
-    { id: 1, name: "physics", price: 50 },
-    { id: 2, name: "chemistry", price: 60 },
-    { id: 3, name: "biology", price: 70 },
-    { id: 4, name: "math", price: 80 },
-  ];
+  const [count, setCount] = useState(0);
+  const [users, setUsers] = useState([]);
+  const clickOne = () => {
+    const newCount = count + 1;
+    setCount(newCount);
+  };
+  function clickTwo() {
+    const newCount = count - 1;
+    setCount(newCount);
+  }
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
   return (
     <>
       <h1>Vite + React</h1>
-      {<BookStore books={books}></BookStore>}
-      {/* <Todo task="web-programming" isDone={true}></Todo>
-      <Todo task="ai-programming" isDone={false}></Todo>
-      <Todo task="data-programming" isDone={true}></Todo> */}
+      <p>Count : {count}</p>
+      <p>Users: {users.length}</p>
+      <button onClick={clickOne}>click One</button>
+      <button onClick={clickTwo}>click two</button>
     </>
   );
 }
